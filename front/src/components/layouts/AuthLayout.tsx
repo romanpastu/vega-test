@@ -1,22 +1,12 @@
-import { Link, Outlet } from '@tanstack/react-router'
-import { Button } from '../ui/Button'
+import { Outlet } from '@tanstack/react-router'
+import { Sidebar } from './Sidebar/Sidebar'
 
 function AuthLayout() {
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground">
-      <header className="flex-none bg-background border-b">
-        <div className="container mx-auto py-4 px-4 flex items-center justify-between">
-          <nav className="flex gap-4">
-            <Link to="/dashboard">
-              <Button data-testid="dashboard-button">Go to Dashboard</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
-      <main className="flex-1 overflow-auto">
-        <div className="container mx-auto py-8 px-4">
-          <Outlet />
-        </div>
+    <div className="flex h-screen bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 h-full overflow-y-auto p-8">
+        <Outlet />
       </main>
     </div>
   )

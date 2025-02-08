@@ -1,5 +1,6 @@
 export const LOGIN_PATH = '/login'
 export const MAIN_PATH = '/dashboard'
+export const EXAMPLE_PATH = '/example'
 export const PRIVATE_PATH = '/'
 export const NOT_FOUND_PATH = '/404'
 export const LOGIN_TREE: RouteTree = {
@@ -21,3 +22,13 @@ export const DASHBOARD_TREE: RouteTree = {
     }
   }
 } 
+
+export const EXAMPLE_TREE = {
+  ROOT: {
+    path: EXAMPLE_PATH,
+    metadata: {
+      title: 'Example',
+      description: 'Example page'
+    }
+  }
+} as const; 
