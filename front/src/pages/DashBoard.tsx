@@ -46,26 +46,28 @@ const HISTORICAL_DATA = [
     { date: '2024-02', value: 99500 },
     { date: '2024-03', value: 100000 },
 ];
-
 export default function Dashboard() {
     return (
-        <div className="box-border h-screen grid grid-rows-2 gap-4 p-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {/* Top Left Section */}
-                <div className="bg-gray-100 rounded-lg p-6">
+        <div className="box-border h-full p-4 flex flex-col lg:gap-4 gap-10">
+            {/* Top Section - Two Columns in Large, One Column in Mobile */}
+            <div className="flex flex-col lg:flex-row gap-4 h-2/3 lg:h-1/2 min-h-[500px]">
+                {/* Portfolio Balance Chart */}
+                <div className="bg-gray-100 rounded-lg p-6 flex-1 min-h-[250px]">
                     <PortfolioChart data={PORTFOLIO_DATA} colors={CHART_COLORS} />
                 </div>
 
-                {/* Top Right Section */}
-                <div className="bg-gray-100 rounded-lg p-6">
+                {/* Portfolio Positions Table */}
+                <div className="bg-gray-100 rounded-lg p-6 flex-1 min-h-[250px]">
                     <PortfolioTable data={PORTFOLIO_DATA} />
                 </div>
             </div>
 
-            {/* Bottom Section - Historical Chart */}
-            <div className="bg-gray-100 rounded-lg p-6">
+            {/* Bottom Section - Portfolio History */}
+            <div className="bg-gray-100 rounded-lg p-6 h-1/3 lg:h-1/2 min-h-[300px]">
                 <PortfolioHistoryChart data={HISTORICAL_DATA} />
             </div>
         </div>
     );
 }
+
+
