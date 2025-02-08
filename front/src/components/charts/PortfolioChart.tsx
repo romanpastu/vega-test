@@ -1,8 +1,7 @@
+import { VIEW_TYPE } from '@/pages/dashboard/constants/portfolio';
+import { ViewType } from '@/pages/dashboard/DashBoard';
 import { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
-
-// Types
-type ViewType = 'class' | 'specific';
 
 export interface PortfolioData {
     name: string;
@@ -15,12 +14,32 @@ export interface PortfolioChartProps {
         specificAssets: PortfolioData[];
     };
     colors: string[];
+    onSelectionChange?: (selection: { type: ViewType; name: string } | null) => void;
+    viewType: ViewType;
+    onViewTypeChange: (type: ViewType) => void;
 }
 
-export function PortfolioChart({ data, colors }: PortfolioChartProps) {
-    const [viewType, setViewType] = useState<ViewType>('class');
-    const currentData = viewType === 'class' ? data.assetClass : data.specificAssets;
+export function PortfolioChart({ 
+    data, 
+    colors, 
+    onSelectionChange,
+    viewType,
+    onViewTypeChange
+}: PortfolioChartProps) {
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const currentData = viewType === VIEW_TYPE.CLASS ? data.assetClass : data.specificAssets;
     const totalValue = currentData.reduce((sum, item) => sum + item.value, 0);
+
+    const handlePieClick = (data: { name: string }) => {
+        const name = data.name;
+        if (selectedItem === name) {
+            setSelectedItem(null);
+            onSelectionChange?.(null);
+        } else {
+            setSelectedItem(name);
+            onSelectionChange?.({ type: viewType, name });
+        }
+    };
 
     return (
         <div className="h-full flex flex-col">
@@ -28,9 +47,9 @@ export function PortfolioChart({ data, colors }: PortfolioChartProps) {
                 <h2 className="text-xl font-semibold">Portfolio Balance</h2>
                 <div className="flex gap-2">
                     <button
-                        onClick={() => setViewType('class')}
+                        onClick={() => onViewTypeChange('class')}
                         className={`px-3 py-1 rounded-md text-sm ${
-                            viewType === 'class'
+                            viewType === VIEW_TYPE.CLASS
                                 ? 'bg-primary text-primary-foreground'
                                 : 'bg-secondary text-secondary-foreground'
                         }`}
@@ -38,9 +57,9 @@ export function PortfolioChart({ data, colors }: PortfolioChartProps) {
                         Asset Class
                     </button>
                     <button
-                        onClick={() => setViewType('specific')}
+                        onClick={() => onViewTypeChange('specific')}
                         className={`px-3 py-1 rounded-md text-sm ${
-                            viewType === 'specific'
+                            viewType === VIEW_TYPE.SPECIFIC
                                 ? 'bg-primary text-primary-foreground'
                                 : 'bg-secondary text-secondary-foreground'
                         }`}
@@ -60,9 +79,14 @@ export function PortfolioChart({ data, colors }: PortfolioChartProps) {
                             outerRadius="80%"
                             paddingAngle={2}
                             dataKey="value"
+                            onClick={handlePieClick}
                         >
                             {currentData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                <Cell 
+                                    key={`cell-${index}`} 
+                                    fill={colors[index % colors.length]}
+                                    opacity={selectedItem === null || selectedItem === entry.name ? 1 : 0.5}
+                                />
                             ))}
                         </Pie>
                         <Tooltip

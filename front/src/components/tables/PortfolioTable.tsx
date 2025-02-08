@@ -1,19 +1,18 @@
 import { cn } from "@/lib/utils"
-import { useState } from 'react';
-
-type ViewType = 'class' | 'specific';
-
+import { VIEW_TYPE } from "@/pages/dashboard/constants/portfolio";
+import { ViewType } from "@/pages/dashboard/DashBoard";
 interface PortfolioTableProps {
   data: {
     assetClass: Array<{ name: string; value: number }>;
     specificAssets: Array<{ name: string; value: number }>;
   };
   className?: string;
+  viewType: ViewType;
+  onViewTypeChange: (type: ViewType) => void;
 }
 
-export function PortfolioTable({ data, className }: PortfolioTableProps) {
-  const [viewType, setViewType] = useState<ViewType>('class');
-  const currentData = viewType === 'class' ? data.assetClass : data.specificAssets;
+export function PortfolioTable({ data, className, viewType, onViewTypeChange }: PortfolioTableProps) {
+  const currentData = viewType === VIEW_TYPE.CLASS ? data.assetClass : data.specificAssets;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -33,9 +32,9 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
         <h2 className="text-xl font-semibold">Portfolio Positions</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => setViewType('class')}
+            onClick={() => onViewTypeChange('class')}
             className={`px-3 py-1 rounded-md text-sm ${
-              viewType === 'class'
+              viewType === VIEW_TYPE.CLASS
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-secondary text-secondary-foreground'
             }`}
@@ -43,9 +42,9 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
             Asset Class
           </button>
           <button
-            onClick={() => setViewType('specific')}
+            onClick={() => onViewTypeChange('specific')}
             className={`px-3 py-1 rounded-md text-sm ${
-              viewType === 'specific'
+              viewType === VIEW_TYPE.SPECIFIC
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-secondary text-secondary-foreground'
             }`}

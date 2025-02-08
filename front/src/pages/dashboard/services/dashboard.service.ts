@@ -27,10 +27,10 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
                 if (!asset) return;
 
                 const value = position.quantity * position.price;
+                const assetClass = asset.type === ASSET_TYPES.STOCK ? 'Stocks' :
+                                 asset.type === ASSET_TYPES.CRYPTO ? 'Crypto' : 'Cash';
 
                 // Aggregate by asset class
-                const assetClass = asset.type === ASSET_TYPES.STOCK ? 'Stocks' :
-                                asset.type === ASSET_TYPES.CRYPTO ? 'Crypto' : 'Cash';
                 assetClassAggregates.set(
                     assetClass, 
                     (assetClassAggregates.get(assetClass) || 0) + value
@@ -61,7 +61,7 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
         return result;
     } catch (error) {
         console.error('Error aggregating portfolio data:', error);
-       throw new Error('Failed to fetch portfolio data');
+        throw new Error('Failed to fetch portfolio data');
     }
 };
 

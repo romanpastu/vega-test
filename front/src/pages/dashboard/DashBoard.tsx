@@ -5,7 +5,10 @@ import { getAggregatedPortfolioData } from './services/dashboard.service';
 import { useQuery } from '@tanstack/react-query';
 import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { VIEW_TYPE } from './constants/portfolio';
 
+export type ViewType = typeof VIEW_TYPE.CLASS | typeof VIEW_TYPE.SPECIFIC;
 const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFA07A'];
 
 // Mock historical data - last 12 months
@@ -25,10 +28,24 @@ const HISTORICAL_DATA = [
 ];
 
 export default function Dashboard() {
-    const { data: portfolioData, isLoading, error } = useQuery({
+    const [chartViewType, setChartViewType] = useState<ViewType>(VIEW_TYPE.CLASS);
+    const [tableViewType, setTableViewType] = useState<ViewType>(VIEW_TYPE.CLASS);
+
+    const { data: portfolioData, isLoading, error, isFetching, refetch } = useQuery({
         queryKey: ['portfolioData'],
-        queryFn: getAggregatedPortfolioData
+        queryFn: getAggregatedPortfolioData,
     });
+
+    const handleChartViewTypeChange = (type: ViewType) => {
+        setChartViewType(type);
+        refetch(); 
+    };
+
+    const handleTableViewTypeChange = (type: ViewType) => {
+        setTableViewType(type);
+        refetch(); 
+    };
+
     const ErrorState = () => (
         <div className="flex flex-col items-center justify-center h-full gap-4 text-destructive">
             <AlertCircle size={48} />
@@ -44,15 +61,20 @@ export default function Dashboard() {
                 <div 
                     className={cn(
                         "rounded-lg p-6 flex-1 min-h-[250px]",
-                        isLoading 
+                        (isLoading || isFetching)
                             ? "animate-pulse bg-accent/80" 
                             : "bg-[var(--chart-container-bg)]"
                     )}
                 >
                     {error ? (
                         <ErrorState />
-                    ) : portfolioData ? (
-                        <PortfolioChart data={portfolioData} colors={CHART_COLORS} />
+                    ) : portfolioData && !isFetching ? (
+                        <PortfolioChart 
+                            data={portfolioData} 
+                            colors={CHART_COLORS}
+                            viewType={chartViewType}
+                            onViewTypeChange={handleChartViewTypeChange}
+                        />
                     ) : null}
                 </div>
 
@@ -60,15 +82,19 @@ export default function Dashboard() {
                 <div 
                     className={cn(
                         "rounded-lg p-6 flex-1 min-h-[250px]",
-                        isLoading 
+                        (isLoading || isFetching)
                             ? "animate-pulse bg-accent/80" 
                             : "bg-[var(--chart-container-bg)]"
                     )}
                 >
                     {error ? (
                         <ErrorState />
-                    ) : portfolioData ? (
-                        <PortfolioTable data={portfolioData} />
+                    ) : portfolioData && !isFetching ? (
+                        <PortfolioTable 
+                            data={portfolioData} 
+                            viewType={tableViewType}
+                            onViewTypeChange={handleTableViewTypeChange}
+                        />
                     ) : null}
                 </div>
             </div>
