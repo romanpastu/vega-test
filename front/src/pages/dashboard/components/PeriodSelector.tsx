@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/Button';
 import { PeriodType } from '../types';
 import { PERIOD_TYPE } from '../constants/portfolio';
 
-interface PeriodSelectorProps {
+export type PeriodSelectorProps = {
     selectedPeriod: PeriodType;
     onPeriodChange: (period: PeriodType) => void;
 }

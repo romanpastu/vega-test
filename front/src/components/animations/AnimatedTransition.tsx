@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { ANIMATION_CLASSES } from '@/constants/animations'
 
-interface AnimatedTransitionProps {
+export type AnimatedTransitionProps = {
   children: ReactNode
   isExiting?: boolean
   className?: string

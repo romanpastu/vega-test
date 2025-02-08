@@ -1,4 +1,5 @@
 import { NAV_ITEMS } from "@/constants/navigation";
+import { NavItem } from "@/types/navigation";
 import { Link, useMatches } from "@tanstack/react-router";
 
 const NavLink = ({ item }: { item: NavItem }) => {

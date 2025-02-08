@@ -4,7 +4,7 @@ import { PeriodSelector } from './PeriodSelector';
 import { PeriodType } from '../types';
 import { PortfolioValueHistory } from '@/types/portfolio';
 
-interface PortfolioHistoryProps {
+export type PortfolioHistoryProps = {
     data: PortfolioValueHistory;
     isLoading: boolean;
     isFetching: boolean;

@@ -1,12 +1,12 @@
 import { API_ENDPOINTS } from '@/constants/api'
 import { createApiService } from '@/lib/api/base'
 
-export interface LoginCredentials {
+export type LoginCredentials = {
   username: string
   password: string
 }
 
-export interface LoginResponse {
+export type LoginResponse = {
   token: string
 }
 

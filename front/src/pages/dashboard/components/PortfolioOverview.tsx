@@ -4,7 +4,7 @@ import { LoadingContainer } from './LoadingContainer';
 import { ViewType } from '../types';
 import { AggregatedPortfolioData } from '@/types/portfolio';
 
-interface PortfolioOverviewProps {
+export type PortfolioOverviewProps = {
     data: AggregatedPortfolioData;
     isLoading: boolean;
     isFetching: boolean;

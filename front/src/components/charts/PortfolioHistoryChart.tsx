@@ -1,11 +1,11 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-interface PortfolioHistoryData {
+export type PortfolioHistoryData = {
     date: string;
     value: number;
 }
 
-interface PortfolioHistoryChartProps {
+export type PortfolioHistoryChartProps = {
     data: PortfolioHistoryData[];
 }
 

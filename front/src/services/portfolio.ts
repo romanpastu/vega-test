@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "@/constants/api";
 import { createApiService } from "@/lib/api/base";
 
-interface GetPortfoliosParams {
+export type GetPortfoliosParams = {
     from?: string;
     to?: string;
 }

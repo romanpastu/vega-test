@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils"
 import { VIEW_TYPE } from "@/pages/dashboard/constants/portfolio";
-import { ViewType } from "@/pages/dashboard/DashBoard";
-interface PortfolioTableProps {
+import { ViewType } from "@/pages/dashboard/types";
+
+export type PortfolioTableProps = {
   data: {
     assetClass: Array<{ name: string; value: number }>;
     specificAssets: Array<{ name: string; value: number }>;

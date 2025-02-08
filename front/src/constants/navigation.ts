@@ -2,6 +2,7 @@ import { Rocket } from "lucide-react";
 import { EXAMPLE_PATH } from "./router";
 import { LayoutDashboard } from "lucide-react";
 import { MAIN_PATH } from "./router";
+import { NavItem } from "@/types/navigation";
 
 export const NAV_ITEMS: NavItem[] = [
     {

@@ -23,7 +23,7 @@ export const DASHBOARD_TREE: RouteTree = {
   }
 } 
 
-export const EXAMPLE_TREE = {
+export const EXAMPLE_TREE : RouteTree = {
   ROOT: {
     path: EXAMPLE_PATH,
     metadata: {

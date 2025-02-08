@@ -15,12 +15,12 @@ declare global {
     }
 }
 
-export interface PortfolioData {
+export type PortfolioData = {
     assetClass: { name: string; value: number }[];
     specificAssets: { name: string; value: number }[];
 }
 
-export interface PortfolioHistoryDataPoint {
+export type PortfolioHistoryDataPoint = {
     date: string;
     value: number;
 }

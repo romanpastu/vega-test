@@ -1,14 +1,14 @@
 import { VIEW_TYPE } from '@/pages/dashboard/constants/portfolio';
-import { ViewType } from '@/pages/dashboard/DashBoard';
+import { ViewType } from '@/pages/dashboard/types';
 import { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
-export interface PortfolioData {
+export type PortfolioData = {
     name: string;
     value: number;
 }
 
-export interface PortfolioChartProps {
+export type PortfolioChartProps = {
     data: {
         assetClass: PortfolioData[];
         specificAssets: PortfolioData[];

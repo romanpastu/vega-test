@@ -10,7 +10,7 @@ export default function ErrorPage({ error, info }: {
     }
 
     console.error("ErrorPage caught an error:", error, "URL:", info);
-
+    //log to some service...
     return (
         <div>
             <h1>Something went wrong!</h1>
