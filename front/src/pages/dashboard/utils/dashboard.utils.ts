@@ -1,4 +1,4 @@
-import { PeriodType } from "../services/dashboard.service";
+import { PeriodType } from "../types";
 
 export const getDateRangeFromPeriod = (period: PeriodType) => {
     const to = new Date();

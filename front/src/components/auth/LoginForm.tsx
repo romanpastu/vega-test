@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/Label"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
-import { useLogin } from "@/hooks/useLogin"
+import { useLogin } from "@/pages/login/hooks/useLogin"
 
 export function LoginForm() {
   const { formData, updateFormData, handleSubmit, loginMutation } = useLogin()

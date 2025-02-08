@@ -1,17 +1,9 @@
 import { portfolioService } from "@/services/portfolio";
 import { ASSET_TYPES } from "@/constants/assets";
 import { getDateRangeFromPeriod } from "../utils/dashboard.utils";
-
-interface PortfolioData {
-    assetClass: { name: string; value: number }[];
-    specificAssets: { name: string; value: number }[];
-}
-interface PortfolioValueHistory {
-    date: string;
-    value: number;
-}
-
-export type PeriodType = '1D' | '1W' | '1M' | '1Y';
+import { PortfolioData, PortfolioValueHistory } from "@/types/portfolio";
+import { PeriodType } from "../types";
+import { PERIOD_TYPE } from "../constants/portfolio";
 
 export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
     try {
@@ -72,7 +64,7 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
     }
 };
 
-export const getAggregatedPortfolioValueHistory = async (period: PeriodType = '1M'): Promise<PortfolioValueHistory[]> => {
+export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PERIOD_TYPE.MONTH): Promise<PortfolioValueHistory> => {
     try {
         const dateRange = getDateRangeFromPeriod(period);
         const portfolios = await portfolioService.getPortfolios(dateRange);
@@ -94,7 +86,7 @@ export const getAggregatedPortfolioValueHistory = async (period: PeriodType = '1
                     year: 'numeric', 
                     month: '2-digit', 
                     day: '2-digit',
-                    ...(period === '1D' && { hour: '2-digit', minute: '2-digit' })
+                    ...(period === PERIOD_TYPE.DAY && { hour: '2-digit', minute: '2-digit' })
                 });
 
                 // Aggregate values for the same date
