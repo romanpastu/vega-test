@@ -6,8 +6,8 @@ function AuthLayout() {
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden">
       <Sidebar />
-      <AnimatedTransition className="flex-1 h-full">
-        <main className="h-full overflow-y-auto p-8">
+      <AnimatedTransition className="flex-1">
+        <main className="h-full overflow-auto">
           <Outlet />
         </main>
       </AnimatedTransition>
