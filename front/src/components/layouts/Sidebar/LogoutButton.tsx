@@ -1,10 +1,16 @@
 import { useNavigate } from '@tanstack/react-router'
 import { LogOut } from 'lucide-react'
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
+import { ANIMATION_DURATION, ANIMATION_CLASSES } from '@/constants/animations'
 
 export function LogoutButton() {
   const navigate = useNavigate()
+  const [isExiting, setIsExiting] = useState(false)
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    setIsExiting(true)
+    await new Promise(resolve => setTimeout(resolve, ANIMATION_DURATION.DEFAULT))
     localStorage.removeItem('jwt')
     navigate({ to: '/login' })
   }
@@ -12,9 +18,24 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="mt-auto mb-6 p-3 rounded-lg bg-slate-700/50 text-white hover:bg-slate-700 transition-colors"
+      className={cn(
+        "mt-auto mb-6 p-3 rounded-lg text-white",
+        ANIMATION_CLASSES.DEFAULT_TRANSITION,
+        isExiting 
+          ? "bg-slate-900/50 opacity-50 scale-95" 
+          : "bg-slate-700/50 hover:bg-slate-700 hover:scale-105"
+      )}
+      disabled={isExiting}
     >
-      <LogOut size={20} />
+      <LogOut 
+        size={20}
+        className={cn(
+          ANIMATION_CLASSES.DEFAULT_TRANSITION,
+          isExiting 
+            ? "opacity-0 -translate-x-2" 
+            : "opacity-100 translate-x-0"
+        )}
+      />
     </button>
   )
 } 
