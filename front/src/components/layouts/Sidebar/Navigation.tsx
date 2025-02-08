@@ -18,6 +18,7 @@ const NavLink = ({ item }: { item: NavItem }) => {
             ? 'bg-slate-600 text-white'
             : 'bg-slate-700/50 text-white hover:bg-slate-700'
         }`}
+        data-testid={item.label.toLowerCase().replace(' ', '-')}
       >
         <Icon size={20} />
       </div>
@@ -29,7 +30,7 @@ export const Navigation = () => {
   return (
     <nav className="flex flex-col items-center gap-4 mt-8">
       {NAV_ITEMS.map((item) => (
-        <NavLink key={item.path} item={item} />
+        <NavLink key={item.path} item={item}/>
       ))}
     </nav>
   );

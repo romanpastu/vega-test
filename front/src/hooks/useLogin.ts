@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { authService, type LoginCredentials } from '@/services/auth'
+import { MAIN_PATH } from '@/constants/router'
 
 export function useLogin() {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ export function useLogin() {
     mutationFn: authService.login,
     onSuccess: (data) => {
       localStorage.setItem('jwt', data.token)
-      navigate({ to: '/dashboard' })
+      navigate({ to: MAIN_PATH })
     },
   })
 
