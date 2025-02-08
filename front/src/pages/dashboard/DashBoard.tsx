@@ -34,29 +34,25 @@ export default function Dashboard() {
 
     return (
         <div className="box-border h-full p-4 flex flex-col lg:gap-4 gap-10">
-            {portfolioData && (
-                <PortfolioOverview
-                    data={portfolioData}
-                    isLoading={isLoading}
-                    isFetching={isFetching}
-                    error={error}
-                    chartViewType={chartViewType}
-                    tableViewType={tableViewType}
-                    onChartViewTypeChange={handleChartViewTypeChange}
-                    onTableViewTypeChange={handleTableViewTypeChange}
-                />
-            )}
+            <PortfolioOverview
+                data={portfolioData || { assetClass: [], specificAssets: [] }}
+                isLoading={isLoading}
+                isFetching={isFetching}
+                error={error}
+                chartViewType={chartViewType}
+                tableViewType={tableViewType}
+                onChartViewTypeChange={handleChartViewTypeChange}
+                onTableViewTypeChange={handleTableViewTypeChange}
+            />
 
-            {portfolioValueHistory && (
-                <PortfolioHistory
-                    data={portfolioValueHistory}
-                    isLoading={isValueHistoryLoading}
-                    isFetching={isValueHistoryFetching}
-                    error={valueHistoryError}
-                    selectedPeriod={selectedPeriod}
-                    onPeriodChange={setSelectedPeriod}
-                />
-            )}
+            <PortfolioHistory
+                data={portfolioValueHistory || []}
+                isLoading={isValueHistoryLoading}
+                isFetching={isValueHistoryFetching}
+                error={valueHistoryError}
+                selectedPeriod={selectedPeriod}
+                onPeriodChange={setSelectedPeriod}
+            />
         </div>
     );
 }
