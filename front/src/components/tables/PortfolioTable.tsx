@@ -58,8 +58,8 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
       <div className="relative flex-1 min-h-0">
         <div className={cn("absolute inset-0 overflow-auto", className)}>
           <table className="w-full">
-            <thead className="sticky top-0 bg-white z-10 dark:bg-slate-700">
-              <tr className="border-b">
+            <thead className="sticky top-0 bg-background z-10">
+              <tr className="border-b border-border">
                 <th className="text-left p-3 font-semibold">Asset</th>
                 <th className="text-right p-3 font-semibold">Value</th>
                 <th className="text-right p-3 font-semibold">Allocation</th>
@@ -67,7 +67,7 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
             </thead>
             <tbody>
               {currentData.map((asset) => (
-                <tr key={asset.name} className="border-b border-dashed hover:bg-gray-50 dark:hover:bg-slate-700">
+                <tr key={asset.name} className="border-b border-border/50 hover:bg-muted">
                   <td className="p-3 font-medium">{asset.name}</td>
                   <td className="text-right p-3">{formatCurrency(asset.value)}</td>
                   <td className="text-right p-3">{calculatePercentage(asset.value)}</td>

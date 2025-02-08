@@ -10,13 +10,13 @@ const NavLink = ({ item }: { item: NavItem }) => {
   return (
     <Link to={item.path} className="relative group" title={item.label}>
       {isActive && (
-        <div className="absolute -left-4 w-1 h-8 bg-white rounded-r-full" />
+        <div className="absolute -left-4 w-1 h-8 bg-primary rounded-r-full" />
       )}
       <div
         className={`p-3 rounded-lg transition-colors ${
           isActive
-            ? 'bg-slate-600 text-white'
-            : 'bg-slate-700/50 text-white hover:bg-slate-700'
+            ? 'bg-primary text-primary-foreground'
+            : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
         }`}
         data-testid={item.label.toLowerCase().replace(' ', '-')}
       >

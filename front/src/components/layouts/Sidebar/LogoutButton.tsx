@@ -19,11 +19,11 @@ export function LogoutButton() {
     <button
       onClick={handleLogout}
       className={cn(
-        "mt-auto mb-6 p-3 rounded-lg text-white",
+        "mt-auto mb-6 p-3 rounded-lg text-destructive-foreground",
         ANIMATION_CLASSES.DEFAULT_TRANSITION,
         isExiting 
-          ? "bg-slate-900/50 opacity-50 scale-95" 
-          : "bg-slate-700/50 hover:bg-slate-700 hover:scale-105"
+          ? "bg-destructive/50 opacity-50 scale-95" 
+          : "bg-destructive hover:bg-destructive/90 hover:scale-105"
       )}
       disabled={isExiting}
     >
