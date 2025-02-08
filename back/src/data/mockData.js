@@ -1,21 +1,21 @@
 const mockAssets = [
   {
-    id: "550e8400-e29b-41d4-a716-446655440000",
+    id: "id-apple",
     name: "Apple Inc.",
     type: "stock"
   },
   {
-    id: "550e8400-e29b-41d4-a716-446655440001",
+    id: "id-bitcoin",
     name: "Bitcoin",
     type: "crypto"
   },
   {
-    id: "550e8400-e29b-41d4-a716-446655440002",
+    id: "id-usd",
     name: "US Dollar",
     type: "fiat"
   },
   {
-    id: "550e8400-e29b-41d4-a716-446655440003",
+    id: "id-gbp",
     name: "British Pound",
     type: "fiat"
   }
@@ -29,19 +29,19 @@ const mockPrices = {
 };
 
 const mockPortfolio = {
-  id: "660e8400-e29b-41d4-a716-446655440000",
+  id: "1",
   asOf: new Date().toISOString(),
   positions: [
     {
       id: 1,
-      asset: "550e8400-e29b-41d4-a716-446655440000",
+      asset: "id-apple",
       quantity: 10,
       asOf: new Date().toISOString(),
       price: 190.32
     },
     {
       id: 2,
-      asset: "550e8400-e29b-41d4-a716-446655440001",
+      asset: "id-bitcoin",
       quantity: 1,
       asOf: new Date().toISOString(),
       price: 42000.00
