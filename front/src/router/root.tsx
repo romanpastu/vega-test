@@ -1,14 +1,15 @@
 import { createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import React from 'react'
-import { Outlet } from '@tanstack/react-router'
 import NotFoundPage from '@/pages/error/NotFoundPage'
 import ErrorPage from '@/pages/error/ErrorPage'
 import { IS_DEV } from '@/constants/global'
+import RootLayout from '@/components/layouts/RootLayout'
+
 export const rootRoute = createRootRoute({
   component: () => (
     <>
-      <Outlet />
+      <RootLayout />
       {IS_DEV && 
         <React.Suspense>
           <TanStackRouterDevtools />

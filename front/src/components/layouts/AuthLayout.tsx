@@ -1,7 +1,5 @@
-
 import { Link, Outlet } from '@tanstack/react-router'
 import { Button } from '../ui/Button'
-import { ThemeToggle } from '../ui/ThemeToggle'
 
 function AuthLayout() {
   return (
@@ -13,7 +11,6 @@ function AuthLayout() {
               <Button data-testid="dashboard-button">Go to Dashboard</Button>
             </Link>
           </nav>
-          <ThemeToggle />
         </div>
       </header>
       <main className="flex-1 overflow-auto">
