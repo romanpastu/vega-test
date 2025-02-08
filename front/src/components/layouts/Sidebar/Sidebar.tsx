@@ -4,7 +4,7 @@ import { LogoutButton } from './LogoutButton'
 
 export function Sidebar() {
   return (
-    <aside className="w-16 flex flex-col items-center border-r border-slate-700">
+    <aside className="w-16 flex flex-col items-center border-r border-gray bg-white dark:bg-slate-900 dark:border-slate-700 ">
       <Logo />
       <Navigation />
       <LogoutButton />

@@ -25,8 +25,8 @@ export function PortfolioHistoryChart({ data }: PortfolioHistoryChartProps) {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="date" />
-                        <YAxis />
+                        <XAxis dataKey="date" tick={{ fill: 'var(--chart-text)' }}  />
+                        <YAxis  tick={{ fill: 'var(--chart-text)' }}  />
                         <Tooltip />
                         <Area 
                             type="monotone" 

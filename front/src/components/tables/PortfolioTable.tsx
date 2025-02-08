@@ -58,7 +58,7 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
       <div className="relative flex-1 min-h-0">
         <div className={cn("absolute inset-0 overflow-auto", className)}>
           <table className="w-full">
-            <thead className="sticky top-0 bg-white z-10">
+            <thead className="sticky top-0 bg-white z-10 dark:bg-slate-700">
               <tr className="border-b">
                 <th className="text-left p-3 font-semibold">Asset</th>
                 <th className="text-right p-3 font-semibold">Value</th>
@@ -67,7 +67,7 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
             </thead>
             <tbody>
               {currentData.map((asset) => (
-                <tr key={asset.name} className="border-b border-dashed hover:bg-gray-50">
+                <tr key={asset.name} className="border-b border-dashed hover:bg-gray-50 dark:hover:bg-slate-700">
                   <td className="p-3 font-medium">{asset.name}</td>
                   <td className="text-right p-3">{formatCurrency(asset.value)}</td>
                   <td className="text-right p-3">{calculatePercentage(asset.value)}</td>
@@ -79,7 +79,7 @@ export function PortfolioTable({ data, className }: PortfolioTableProps) {
       </div>
 
       <div className="text-center mt-4">
-        <p className="text-lg font-semibold">
+        <p className="text-lg font-semibold ">
           Total Value: {formatCurrency(currentData.reduce((sum, item) => sum + item.value, 0))}
         </p>
       </div>
