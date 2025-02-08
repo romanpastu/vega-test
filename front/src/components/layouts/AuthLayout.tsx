@@ -9,11 +9,8 @@ function AuthLayout() {
       <header className="flex-none bg-background border-b">
         <div className="container mx-auto py-4 px-4 flex items-center justify-between">
           <nav className="flex gap-4">
-            <Link to="/route1">
-              <Button>Go to Route 1</Button>
-            </Link>
-            <Link to="/route2">
-              <Button>Go to Route 2</Button>
+            <Link to="/dashboard">
+              <Button data-testid="dashboard-button">Go to Dashboard</Button>
             </Link>
           </nav>
           <ThemeToggle />
