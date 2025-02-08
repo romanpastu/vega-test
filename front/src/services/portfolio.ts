@@ -1,5 +1,10 @@
 import { API_ENDPOINTS } from "@/constants/api";
 
+interface GetPortfoliosParams {
+    from?: string; 
+    to?: string; 
+}
+
 export const portfolioService = {
     getAssets: async (): Promise<API.Asset[]> => {
         const response = await fetch(API_ENDPOINTS.dashboard.assets, {
@@ -31,8 +36,14 @@ export const portfolioService = {
         return response.json();
     },
 
-    getPortfolios: async (): Promise<API.Portfolio[]> => {
-        const response = await fetch(API_ENDPOINTS.dashboard.portfolios, {
+    getPortfolios: async (params?: GetPortfoliosParams): Promise<API.Portfolio[]> => {
+        const queryParams = new URLSearchParams();
+        if (params?.from) queryParams.append('from', params.from);
+        if (params?.to) queryParams.append('to', params.to);
+
+        const url = `${API_ENDPOINTS.dashboard.portfolios}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+        
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

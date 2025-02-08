@@ -1,7 +1,6 @@
 declare namespace API {
     export type Portfolio = {
         id: string;
-        asOf: string;  
         positions: Position[];
     }
 

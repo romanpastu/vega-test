@@ -1,39 +1,32 @@
 import { PortfolioChart } from '@/components/charts/PortfolioChart';
 import { PortfolioHistoryChart } from '@/components/charts/PortfolioHistoryChart';
 import { PortfolioTable } from '@/components/tables/PortfolioTable';
-import { getAggregatedPortfolioData } from './services/dashboard.service';
+import { getAggregatedPortfolioData, getAggregatedPortfolioValueHistory } from './services/dashboard.service';
 import { useQuery } from '@tanstack/react-query';
 import { AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { VIEW_TYPE } from './constants/portfolio';
+import { Button } from '@/components/ui/Button';
 
 export type ViewType = typeof VIEW_TYPE.CLASS | typeof VIEW_TYPE.SPECIFIC;
 const CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFA07A'];
 
-// Mock historical data - last 12 months
-const HISTORICAL_DATA = [
-    { date: '2023-04', value: 85000 },
-    { date: '2023-05', value: 87500 },
-    { date: '2023-06', value: 89000 },
-    { date: '2023-07', value: 92000 },
-    { date: '2023-08', value: 88000 },
-    { date: '2023-09', value: 91000 },
-    { date: '2023-10', value: 93500 },
-    { date: '2023-11', value: 96000 },
-    { date: '2023-12', value: 98000 },
-    { date: '2024-01', value: 97000 },
-    { date: '2024-02', value: 99500 },
-    { date: '2024-03', value: 100000 },
-];
+type PeriodType = '1D' | '1W' | '1M' | '1Y';
 
 export default function Dashboard() {
     const [chartViewType, setChartViewType] = useState<ViewType>(VIEW_TYPE.CLASS);
     const [tableViewType, setTableViewType] = useState<ViewType>(VIEW_TYPE.CLASS);
+    const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>('1M');
 
     const { data: portfolioData, isLoading, error, isFetching, refetch } = useQuery({
         queryKey: ['portfolioData'],
         queryFn: getAggregatedPortfolioData,
+    });
+
+    const { data: portfolioValueHistory, isLoading: isValueHistoryLoading, error: valueHistoryError, isFetching: isValueHistoryFetching } = useQuery({
+        queryKey: ['portfolioValueHistory', selectedPeriod],
+        queryFn: () => getAggregatedPortfolioValueHistory(selectedPeriod),
     });
 
     const handleChartViewTypeChange = (type: ViewType) => {
@@ -100,8 +93,34 @@ export default function Dashboard() {
             </div>
 
             {/* Bottom Section - Portfolio History */}
-            <div className="bg-[var(--chart-container-bg)] rounded-lg p-6 h-1/3 lg:h-1/2 min-h-[300px]">
-                <PortfolioHistoryChart data={HISTORICAL_DATA} />
+            <div 
+                className={cn(
+                    "rounded-lg p-6 h-1/3 lg:h-1/2 min-h-[300px]",
+                    (isValueHistoryLoading || isValueHistoryFetching)
+                        ? "animate-pulse bg-accent/80" 
+                        : "bg-[var(--chart-container-bg)]"
+                )}
+            >
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">Portfolio History</h2>
+                    <div className="flex gap-2">
+                        {(['1D', '1W', '1M', '1Y'] as PeriodType[]).map((period) => (
+                            <Button
+                                key={period}
+                                variant={selectedPeriod === period ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setSelectedPeriod(period)}
+                            >
+                                {period}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+                {valueHistoryError ? (
+                    <ErrorState />
+                ) : portfolioValueHistory && !isValueHistoryFetching ? (
+                    <PortfolioHistoryChart data={portfolioValueHistory} />
+                ) : null}
             </div>
         </div>
     );
