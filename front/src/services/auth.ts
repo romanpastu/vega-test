@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from '@/constants/api'
+import { createApiService } from '@/lib/api/base'
 
 export interface LoginCredentials {
   username: string
@@ -9,20 +10,10 @@ export interface LoginResponse {
   token: string
 }
 
+const baseApi = createApiService()
+
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
-    const response = await fetch(API_ENDPOINTS.auth.login, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(credentials),
-    })
-
-    if (!response.ok) {
-      throw new Error('Login failed')
-    }
-
-    return response.json()
-  },
+    return baseApi.post<LoginResponse>(API_ENDPOINTS.auth.login, credentials)
+  }
 } as const 
