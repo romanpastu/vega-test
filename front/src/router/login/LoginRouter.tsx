@@ -1,8 +1,9 @@
 import { LOGIN_TREE, DASHBOARD_TREE } from "@/constants/router"
-import Login from "@/pages/login/Login"
+import { lazy } from "react"
 import { createRoute, redirect } from "@tanstack/react-router"
 import { rootRoute } from "../root"
 
+const Login = lazy(() => import("@/pages/login/Login"))
 
 //Parent Route
 export const loginRouter = createRoute({
