@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '@/constants/api';
+import { API_BASE_URL, API_ENDPOINTS } from '@/constants/api';
 
 // Create axios instance with default config
 export const apiClient = axios.create({
@@ -29,8 +29,11 @@ apiClient.interceptors.response.use(
   async (error) => {
     // Handle 401 Unauthorized errors
     if (error.response?.status === 401) {
-      localStorage.removeItem('jwt');
-      window.location.href = '/login';
+      // Don't redirect if this is the login endpoint
+      if (!error.config.url?.includes(API_ENDPOINTS.auth.login)) {
+        localStorage.removeItem('jwt');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

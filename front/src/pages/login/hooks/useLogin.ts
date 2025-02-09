@@ -22,6 +22,10 @@ export function useLogin() {
       localStorage.setItem('jwt', data.token)
       navigate({ to: MAIN_PATH })
     },
+    onError: (error) => {
+      // Handle error silently - the UI will show the error message
+      console.error('Login failed:', error)
+    }
   })
 
   const handleSubmit = (e: React.FormEvent) => {

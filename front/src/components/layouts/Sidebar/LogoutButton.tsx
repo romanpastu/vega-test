@@ -18,6 +18,7 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
+      data-testid="logout-button"
       className={cn(
         "mt-auto mb-6 p-3 rounded-lg text-destructive-foreground",
         ANIMATION_CLASSES.DEFAULT_TRANSITION,
