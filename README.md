@@ -72,3 +72,4 @@ These specific credentials are hardcoded to trigger an error response for testin
 - **React**: I did use some "modern react" features like suspense or lazy because the build was too big, but regarding hooks like useOptimistic I didnt really see a scenario to apply it there, and hooks like useActionState are mostly integrated in react-query and this is client side rendered so no need to use it.
 - You might notice a "double" fetch of assets in the dashboard, that happens because the same call is done in different services, this can be optimized further but I didn't do it, but the services are properly separated.
 - **React Query**: has a lot of features like auto refetch, caching, etc... but that should be discussed in a bigger context, in this case I disabled all of them.
+- **Commit structure**: I went a bit YOLO with the commits in smaller chunks, but in a real world scenario obviously they would be feature based and reviewed (or at least thats what I expect)
