@@ -29,7 +29,7 @@ export function PortfolioOverview({
 }: PortfolioOverviewProps) {
     return (
         <div className="flex flex-col lg:flex-row lg:gap-4 gap-2 h-2/3 lg:h-1/2 min-h-[500px]">
-            <div className="flex-1 min-h-[250px]">
+            <div className="flex-1 min-h-[250px]" data-testid="test-portfolio-chart">
                 <LoadingContainer isLoading={isLoading} isFetching={isFetching} error={error}>
                     <PortfolioChart 
                         data={data} 
@@ -40,7 +40,7 @@ export function PortfolioOverview({
                 </LoadingContainer>
             </div>
 
-            <div className="flex-1 min-h-[250px]">
+            <div className="flex-1 min-h-[250px]" data-testid="test-portfolio-table">
                 <LoadingContainer isLoading={isLoading} isFetching={isFetching} error={error}>
                     <PortfolioTable 
                         data={data} 

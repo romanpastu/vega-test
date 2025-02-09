@@ -1,28 +1,16 @@
-import { act, render, screen } from '@testing-library/react'
-import { createRouter, RouterProvider, createRootRoute } from '@tanstack/react-router';
+import { act, screen } from '@testing-library/react'
 import { NAV_ITEMS } from "@/constants/navigation";
-import AuthLayout from '../AuthLayout';
 import userEvent from '@testing-library/user-event'
 import { ANIMATION_DURATION } from '@/constants/animations';
-
-const rootRoute = createRootRoute({
-    component: AuthLayout
-})
-
-const testRouter = createRouter({
-    routeTree: rootRoute,
-    defaultPreload: 'intent',
-})
+import { renderWithAuthLayout } from '@/lib/test-utils/test-setup';
 
 describe('AuthLayout', () => {
     it('renders the AuthLayout component', async () => {
-        const { unmount } = render(
-            <RouterProvider router={testRouter} />
-        )
+        const { unmount } = renderWithAuthLayout()
 
         // Test that all defined nav items are present
         for (const item of NAV_ITEMS) {
-            await screen.findByTestId(item.label.toLowerCase().replace(' ', '-'))
+            await screen.findByTestId(`test-${item.label.toLowerCase().replace(' ', '-')}`)
         }
         // Test that a random non-existent nav item is not present
         expect(screen.queryByTestId('some-random-nav')).not.toBeInTheDocument();
@@ -31,23 +19,18 @@ describe('AuthLayout', () => {
     })
 
     it('the logout button should be present', async () => {
-        const { unmount } = render(
-            <RouterProvider router={testRouter} />
-        )
+        const { unmount } = renderWithAuthLayout()
 
-        await screen.findByTestId('logout-button')
+        await screen.findByTestId('test-logout-button')
 
         unmount();
     })
 
-    it('the logout button should redirect to the login page after cleaning the local storage', async () => {
-        await act(async () => {
-            render(
-                <RouterProvider router={testRouter} />
-            );
-        });
 
-        const logoutButton = await screen.findByTestId('logout-button');
+    it('the logout button should redirect to the login page after cleaning the local storage', async () => {
+        const { router } = renderWithAuthLayout();
+
+        const logoutButton = await screen.findByTestId('test-logout-button');
 
         await act(async () => {
             await userEvent.click(logoutButton);
@@ -60,7 +43,16 @@ describe('AuthLayout', () => {
 
         await act(async () => {
             expect(localStorage.getItem('jwt')).toBeNull();
-            expect(testRouter.state.location.pathname).toBe('/login');
+            expect(router.state.location.pathname).toBe('/login');
         });
+    })
+
+    it("there should be a sidebar and the main dashboard should be rendered", async () => {
+        const { unmount } = renderWithAuthLayout()
+
+        await screen.findByTestId('test-dashboard-component')
+        await screen.findByTestId('test-sidebar-component')
+
+        unmount();
     })
 })

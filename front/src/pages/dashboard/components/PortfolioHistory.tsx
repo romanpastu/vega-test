@@ -22,7 +22,7 @@ export function PortfolioHistory({
     onPeriodChange
 }: PortfolioHistoryProps) {
     return (
-        <div className="h-1/3 lg:h-1/2 min-h-[300px]">
+        <div className="h-1/3 lg:h-1/2 min-h-[300px]" data-testid="test-portfolio-history">
             <LoadingContainer isLoading={isLoading} isFetching={isFetching} error={error}>
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">Portfolio History</h2>

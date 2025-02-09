@@ -18,7 +18,7 @@ export function LoginForm() {
           required
           className="h-12 text-lg px-4"
           disabled={loginMutation.isPending}
-          data-testid="username-input"
+          data-testid="test-username-input"
         />
       </div>
       <div className="space-y-3">
@@ -32,11 +32,11 @@ export function LoginForm() {
           required
           className="h-12 text-lg px-4"
           disabled={loginMutation.isPending}
-          data-testid="password-input"
+          data-testid="test-password-input"
         />
       </div>
       {loginMutation.isError && (
-        <p className="text-red-500 text-center" data-testid="login-error-message">
+        <p className="text-red-500 text-center" data-testid="test-login-error-message">
           Invalid username or password
         </p>
       )}
@@ -44,7 +44,7 @@ export function LoginForm() {
         type="submit" 
         className="w-full h-12 text-lg mt-6"
         disabled={loginMutation.isPending}
-        data-testid="login-button"
+        data-testid="test-login-button"
       >
         {loginMutation.isPending ? 'Signing in...' : 'Sign in'}
       </Button>

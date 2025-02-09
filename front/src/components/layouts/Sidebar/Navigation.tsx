@@ -19,7 +19,7 @@ const NavLink = ({ item }: { item: NavItem }) => {
             ? 'bg-primary text-primary-foreground'
             : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
         }`}
-        data-testid={item.label.toLowerCase().replace(' ', '-')}
+        data-testid={`test-${item.label.toLowerCase().replace(' ', '-')}`}
       >
         <Icon size={20} />
       </div>

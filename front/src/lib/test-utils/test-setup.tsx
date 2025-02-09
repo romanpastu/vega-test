@@ -1,5 +1,5 @@
 import { render, cleanup } from '@testing-library/react'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createRouter, createRoute, createRootRoute } from '@tanstack/react-router'
 import { rootRoute } from '@/router/root'
 import { loginRouter } from '@/router/login/LoginRouter'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -7,6 +7,16 @@ import { ThemeProvider } from '@/components/ui/ThemeProvider'
 import { vi } from 'vitest'
 import '@testing-library/jest-dom'
 import { afterEach, beforeAll, beforeEach } from 'vitest'
+import AuthLayout from '@/components/layouts/AuthLayout'
+import Dashboard from '@/pages/dashboard/DashBoard'
+import { portfolioTestData } from './dashboard/fixtures'
+
+// Mock ResizeObserver for charts
+class ResizeObserverMock {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
 
 // Create test instances
 const routeTree = rootRoute.addChildren([loginRouter])
@@ -19,9 +29,49 @@ export const queryClient = new QueryClient({
     },
 })
 
+// Create auth layout test router
+const authRootRoute = createRootRoute({
+    component: AuthLayout
+})
+
+const dashboardRoute = createRoute({
+    getParentRoute: () => authRootRoute,
+    path: '/',
+    component: Dashboard
+})
+
+const authRouteTree = authRootRoute.addChildren([dashboardRoute])
+
+export const createAuthTestRouter = () => {
+    const router = createRouter({
+        routeTree: authRouteTree,
+        defaultPreload: 'intent',
+    })
+    
+    // Initialize router
+    router.navigate({ to: '/' })
+    return router
+}
+
 // Global test setup
 beforeAll(() => {
     window.scrollTo = vi.fn()
+    window.ResizeObserver = ResizeObserverMock
+
+    // Mock the usePortfolioData hook for auth layout tests
+    vi.mock('@/pages/dashboard/hooks/usePortfolioData', () => ({
+        usePortfolioData: () => ({
+            portfolioData: portfolioTestData.mockPortfolioData,
+            portfolioValueHistory: portfolioTestData.mockPortfolioHistory,
+            isLoading: false,
+            isValueHistoryLoading: false,
+            error: null,
+            valueHistoryError: null,
+            isFetching: false,
+            isValueHistoryFetching: false,
+            refetch: vi.fn()
+        })
+    }))
 })
 
 // Setup before each test
@@ -36,6 +86,10 @@ beforeEach(() => {
         length: 0
     }
     Object.defineProperty(window, 'localStorage', { value: storageMock })
+
+    // Set up query mocks for auth layout tests
+    queryClient.setQueryData(['portfolioData'], portfolioTestData.mockPortfolioData)
+    queryClient.setQueryData(['portfolioValueHistory', '1M'], portfolioTestData.mockPortfolioHistory)
 })
 
 // Clean up after each test
@@ -54,12 +108,24 @@ export const clearMocks = () => {
     queryClient.clear()
 }
 
-export const renderWithProviders = () => {
+type BaseRouter = typeof testRouter
+type AuthRouter = ReturnType<typeof createAuthTestRouter>
+type AppRouter = BaseRouter | AuthRouter
+
+export const renderWithProviders = (router: AppRouter = testRouter) => {
     return render(
         <QueryClientProvider client={queryClient}>
             <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-                <RouterProvider router={testRouter} />
+                <RouterProvider router={router} />
             </ThemeProvider>
         </QueryClientProvider>
     )
+}
+
+export const renderWithAuthLayout = () => {
+    const router = createAuthTestRouter()
+    return {
+        ...renderWithProviders(router),
+        router
+    }
 } 

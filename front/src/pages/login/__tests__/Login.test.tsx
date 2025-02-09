@@ -26,9 +26,9 @@ describe('LoginPage', () => {
                 await testRouter.navigate({ to: LOGIN_PATH })
             })
 
-            const usernameInput = await screen.findByTestId('username-input')
-            const passwordInput = await screen.findByTestId('password-input')
-            const loginButton = await screen.findByTestId('login-button')
+            const usernameInput = await screen.findByTestId('test-username-input')
+            const passwordInput = await screen.findByTestId('test-password-input')
+            const loginButton = await screen.findByTestId('test-login-button')
 
             expect(usernameInput).toBeInTheDocument()
             expect(passwordInput).toBeInTheDocument()
@@ -74,7 +74,7 @@ describe('LoginPage', () => {
             )
             await submitLoginForm(user)
     
-            const errorMessage = await screen.findByTestId('login-error-message')
+            const errorMessage = await screen.findByTestId('test-login-error-message')
             expect(errorMessage).toBeInTheDocument()
         })
     })
