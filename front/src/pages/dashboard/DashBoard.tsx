@@ -33,7 +33,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="box-border h-full p-4 flex flex-col lg:gap-4 gap-10">
+        <div className="box-border h-[calc(150vh)] lg:h-full p-4 flex flex-col lg:gap-4 gap-2 overflow-y-auto lg:overflow-visible">
             <PortfolioOverview
                 data={portfolioData || { assetClass: [], specificAssets: [] }}
                 isLoading={isLoading}

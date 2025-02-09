@@ -28,7 +28,7 @@ export function PortfolioOverview({
     onTableViewTypeChange
 }: PortfolioOverviewProps) {
     return (
-        <div className="flex flex-col lg:flex-row gap-4 h-2/3 lg:h-1/2 min-h-[500px]">
+        <div className="flex flex-col lg:flex-row lg:gap-4 gap-2 h-2/3 lg:h-1/2 min-h-[500px]">
             <div className="flex-1 min-h-[250px]">
                 <LoadingContainer isLoading={isLoading} isFetching={isFetching} error={error}>
                     <PortfolioChart 

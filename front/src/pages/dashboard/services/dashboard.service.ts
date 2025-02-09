@@ -7,8 +7,10 @@ import { PERIOD_TYPE } from "../constants/portfolio";
 
 export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
     try {
-        const portfolios = await portfolioService.getPortfolios();
-        const assets = await portfolioService.getAssets();
+        const [portfolios, assets] = await Promise.all([
+            portfolioService.getPortfolios(),
+            portfolioService.getAssets()
+        ]);
 
         // Initialize asset class aggregates
         const assetClassAggregates = new Map<string, number>();
@@ -67,8 +69,10 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
 export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PERIOD_TYPE.MONTH): Promise<PortfolioValueHistory> => {
     try {
         const dateRange = getDateRangeFromPeriod(period);
-        const portfolios = await portfolioService.getPortfolios(dateRange);
-        const assets = await portfolioService.getAssets();
+        const [portfolios, assets] = await Promise.all([
+            portfolioService.getPortfolios(dateRange),
+            portfolioService.getAssets()
+        ]);
 
         const portfolioArray = Array.isArray(portfolios) ? portfolios : [portfolios];
         const historyMap = new Map<string, number>();
