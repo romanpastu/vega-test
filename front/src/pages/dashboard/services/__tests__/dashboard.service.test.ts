@@ -35,9 +35,8 @@ describe("Dashboard Service", () => {
 
         it("should aggregate portfolio data correctly", async () => {
             vi.mocked(portfolioService.getPortfolios).mockResolvedValue(mockPortfolios);
-            vi.mocked(portfolioService.getAssets).mockResolvedValue(mockAssets);
 
-            const result = await getAggregatedPortfolioData();
+            const result = await getAggregatedPortfolioData(mockAssets);
 
             expect(result).toEqual({
                 assetClass: expect.arrayContaining([
@@ -55,9 +54,8 @@ describe("Dashboard Service", () => {
 
         it("should handle empty portfolios", async () => {
             vi.mocked(portfolioService.getPortfolios).mockResolvedValue([]);
-            vi.mocked(portfolioService.getAssets).mockResolvedValue(mockAssets);
 
-            const result = await getAggregatedPortfolioData();
+            const result = await getAggregatedPortfolioData(mockAssets);
 
             expect(result).toEqual({
                 assetClass: [],
@@ -68,7 +66,7 @@ describe("Dashboard Service", () => {
         it("should handle API errors", async () => {
             vi.mocked(portfolioService.getPortfolios).mockRejectedValue(new Error("API Error"));
 
-            await expect(getAggregatedPortfolioData()).rejects.toThrow("Failed to fetch portfolio data");
+            await expect(getAggregatedPortfolioData(mockAssets)).rejects.toThrow("Failed to fetch portfolio data");
         });
     });
 
@@ -91,7 +89,7 @@ describe("Dashboard Service", () => {
                     id: 2,
                     asset: "1", 
                     quantity: 12, 
-                    price: 160,
+                    price:  160,
                     asOf: "2024-01-02T12:00:00Z"
                 },
             ],
@@ -99,9 +97,8 @@ describe("Dashboard Service", () => {
 
         it("should aggregate portfolio value history correctly", async () => {
             vi.mocked(portfolioService.getPortfolios).mockResolvedValue(mockPortfolios);
-            vi.mocked(portfolioService.getAssets).mockResolvedValue(mockAssets);
 
-            const result = await getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH);
+            const result = await getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH, mockAssets);
 
             expect(result).toEqual([
                 { date: "01/01/2024", value: 1500 },
@@ -111,9 +108,8 @@ describe("Dashboard Service", () => {
 
         it("should handle empty history data", async () => {
             vi.mocked(portfolioService.getPortfolios).mockResolvedValue([]);
-            vi.mocked(portfolioService.getAssets).mockResolvedValue(mockAssets);
 
-            const result = await getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH);
+            const result = await getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH, mockAssets);
 
             expect(result).toEqual([]);
         });
@@ -121,15 +117,14 @@ describe("Dashboard Service", () => {
         it("should handle API errors", async () => {
             vi.mocked(portfolioService.getPortfolios).mockRejectedValue(new Error("API Error"));
 
-            await expect(getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH))
+            await expect(getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH, mockAssets))
                 .rejects.toThrow("Failed to fetch portfolio value history");
         });
 
         it("should use default period when none is provided", async () => {
             vi.mocked(portfolioService.getPortfolios).mockResolvedValue(mockPortfolios);
-            vi.mocked(portfolioService.getAssets).mockResolvedValue(mockAssets);
 
-            await getAggregatedPortfolioValueHistory();
+            await getAggregatedPortfolioValueHistory(PERIOD_TYPE.MONTH, mockAssets);
 
             expect(portfolioService.getPortfolios).toHaveBeenCalled();
         });

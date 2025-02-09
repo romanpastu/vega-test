@@ -1,17 +1,27 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAggregatedPortfolioData, getAggregatedPortfolioValueHistory } from '../services/dashboard.service';
 import { PeriodType } from '../types';
+import { portfolioService } from '@/services/portfolio';
 
 export function usePortfolioData(selectedPeriod: PeriodType) {
     const { 
+        data: assets,
+        isLoading: isAssetsLoading 
+    } = useQuery({
+        queryKey: ['assets'],
+        queryFn: portfolioService.getAssets,
+    });
+
+    const { 
         data: portfolioData, 
-        isLoading, 
+        isLoading: isPortfolioLoading, 
         error, 
         isFetching, 
         refetch 
     } = useQuery({
-        queryKey: ['portfolioData'],
-        queryFn: getAggregatedPortfolioData,
+        queryKey: ['portfolioData', assets],
+        queryFn: () => getAggregatedPortfolioData(assets || []),
+        enabled: !!assets,
     });
 
     const { 
@@ -20,15 +30,16 @@ export function usePortfolioData(selectedPeriod: PeriodType) {
         error: valueHistoryError, 
         isFetching: isValueHistoryFetching 
     } = useQuery({
-        queryKey: ['portfolioValueHistory', selectedPeriod],
-        queryFn: () => getAggregatedPortfolioValueHistory(selectedPeriod),
+        queryKey: ['portfolioValueHistory', selectedPeriod, assets],
+        queryFn: () => getAggregatedPortfolioValueHistory(selectedPeriod, assets || []),
+        enabled: !!assets,
     });
 
     return {
         portfolioData,
         portfolioValueHistory,
-        isLoading,
-        isValueHistoryLoading,
+        isLoading: isAssetsLoading || isPortfolioLoading,
+        isValueHistoryLoading: isAssetsLoading || isValueHistoryLoading,
         error,
         valueHistoryError,
         isFetching,

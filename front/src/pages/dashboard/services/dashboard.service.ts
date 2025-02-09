@@ -1,16 +1,13 @@
 import { portfolioService } from "@/services/portfolio";
 import { ASSET_TYPES } from "@/constants/assets";
 import { getDateRangeFromPeriod } from "../utils/dashboard.utils";
-import { PortfolioData, PortfolioValueHistory } from "@/types/portfolio";
+import { PortfolioData, PortfolioValueHistory, PortfolioHistoryDataPoint } from "@/types/portfolio";
 import { PeriodType } from "../types";
 import { PERIOD_TYPE } from "../constants/portfolio";
 
-export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
+export const getAggregatedPortfolioData = async (assets: API.Asset[]): Promise<PortfolioData> => {
     try {
-        const [portfolios, assets] = await Promise.all([
-            portfolioService.getPortfolios(),
-            portfolioService.getAssets()
-        ]);
+        const portfolios = await portfolioService.getPortfolios();
 
         // Initialize asset class aggregates
         const assetClassAggregates = new Map<string, number>();
@@ -49,14 +46,12 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
         const result: PortfolioData = {
             assetClass: Array.from(assetClassAggregates.entries()).map(([name, value]) => ({
                 name,
-                value: Math.round(value)
+                value
             })),
-            specificAssets: Array.from(specificAssetAggregates.entries())
-                .map(([name, value]) => ({
-                    name,
-                    value: Math.round(value)
-                }))
-                .sort((a, b) => b.value - a.value) // Sort by value descending
+            specificAssets: Array.from(specificAssetAggregates.entries()).map(([name, value]) => ({
+                name,
+                value
+            }))
         };
 
         return result;
@@ -66,13 +61,10 @@ export const getAggregatedPortfolioData = async (): Promise<PortfolioData> => {
     }
 };
 
-export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PERIOD_TYPE.MONTH): Promise<PortfolioValueHistory> => {
+export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PERIOD_TYPE.MONTH, assets: API.Asset[]): Promise<PortfolioValueHistory> => {
     try {
         const dateRange = getDateRangeFromPeriod(period);
-        const [portfolios, assets] = await Promise.all([
-            portfolioService.getPortfolios(dateRange),
-            portfolioService.getAssets()
-        ]);
+        const portfolios = await portfolioService.getPortfolios(dateRange);
 
         const portfolioArray = Array.isArray(portfolios) ? portfolios : [portfolios];
         const historyMap = new Map<string, number>();
@@ -85,7 +77,6 @@ export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PE
                 if (!asset) return;
 
                 const positionDate = new Date(position.asOf);
-                const value = position.quantity * position.price;
                 const date = positionDate.toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: '2-digit', 
@@ -93,20 +84,18 @@ export const getAggregatedPortfolioValueHistory = async (period: PeriodType = PE
                     ...(period === PERIOD_TYPE.DAY && { hour: '2-digit', minute: '2-digit' })
                 });
 
-                // Aggregate values for the same date
-                historyMap.set(date, (historyMap.get(date) || 0) + value);
+                historyMap.set(date, (historyMap.get(date) || 0) + position.quantity * position.price);
             });
         });
 
         // Convert map to array and sort by date
-        const history = Array.from(historyMap.entries()).map(([date, value]) => ({
-            date,
-            value: Math.round(value)
-        }));
+        const history: PortfolioHistoryDataPoint[] = Array.from(historyMap.entries())
+            .map(([date, value]) => ({ date, value }))
+            .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-        return history.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        return history;
     } catch (error) {
-        console.error('Error aggregating portfolio value history:', error);
+        console.error('Error fetching portfolio value history:', error);
         throw new Error('Failed to fetch portfolio value history');
     }
 };
