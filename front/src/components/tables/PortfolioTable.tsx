@@ -33,6 +33,7 @@ export function PortfolioTable({ data, className, viewType, onViewTypeChange }: 
         <h2 className="text-xl font-semibold">Portfolio Positions</h2>
         <div className="flex gap-2">
           <button
+            data-testid="test-table-view-toggle-class"
             onClick={() => onViewTypeChange('class')}
             className={`px-3 py-1 rounded-md text-sm ${
               viewType === VIEW_TYPE.CLASS
@@ -43,6 +44,7 @@ export function PortfolioTable({ data, className, viewType, onViewTypeChange }: 
             Asset Class
           </button>
           <button
+            data-testid="test-table-view-toggle-specific"
             onClick={() => onViewTypeChange('specific')}
             className={`px-3 py-1 rounded-md text-sm ${
               viewType === VIEW_TYPE.SPECIFIC

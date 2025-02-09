@@ -47,6 +47,7 @@ export function PortfolioChart({
                 <h2 className="text-xl font-semibold">Portfolio Balance</h2>
                 <div className="flex gap-2">
                     <button
+                        data-testid="test-chart-view-toggle-class"
                         onClick={() => onViewTypeChange('class')}
                         className={`px-3 py-1 rounded-md text-sm ${
                             viewType === VIEW_TYPE.CLASS
@@ -57,6 +58,7 @@ export function PortfolioChart({
                         Asset Class
                     </button>
                     <button
+                        data-testid="test-chart-view-toggle-specific"
                         onClick={() => onViewTypeChange('specific')}
                         className={`px-3 py-1 rounded-md text-sm ${
                             viewType === VIEW_TYPE.SPECIFIC
