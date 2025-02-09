@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.NODE_ENV === 'production' ? 1234 : 3000;
 
 // Middleware
 app.use(cors());
@@ -25,6 +25,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// In production (Docker), bind to all interfaces
+const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+
+app.listen(port, host, () => {
+  console.log(`Server is running on http://${host}:${port}`);
+  console.log('Environment:', process.env.NODE_ENV);
 }); 
