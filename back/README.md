@@ -51,7 +51,7 @@ Example response:
 ```json
 [
   {
-    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "id": "some-id",
     "name": "Apple Inc.",
     "type": "stock"
   }
@@ -90,7 +90,6 @@ Example response:
 ```json
 {
   "id": "660e8400-e29b-41d4-a716-446655440000",
-  "asOf": "2024-01-10T12:00:00.000Z",
   "positions": [
     {
       "id": 1,

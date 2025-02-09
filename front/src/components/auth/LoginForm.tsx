@@ -2,9 +2,11 @@ import { Label } from "@/components/ui/Label"
 import { Input } from "@/components/ui/Input"
 import { Button } from "@/components/ui/Button"
 import { useLogin } from "@/pages/login/hooks/useLogin"
+import { AxiosError } from "axios"
 
 export function LoginForm() {
   const { formData, updateFormData, handleSubmit, loginMutation } = useLogin()
+  const errorStatus = (loginMutation.error as AxiosError)?.response?.status
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -37,7 +39,9 @@ export function LoginForm() {
       </div>
       {loginMutation.isError && (
         <p className="text-red-500 text-center" data-testid="test-login-error-message">
-          Invalid username or password
+          {errorStatus && errorStatus >= 400 && errorStatus < 500
+            ? 'Invalid username or password'
+            : 'An error occurred. Please try again later'}
         </p>
       )}
       <Button 
